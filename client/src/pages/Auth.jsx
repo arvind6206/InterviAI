@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Transcript from "./Transcript";
+import api from "../api/axios.js";
+import toast from "react-hot-toast";
 
 export default function AuthPage() {
   const [mode, setMode] = useState("login");
@@ -11,9 +13,39 @@ export default function AuthPage() {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(isSignup ? "sign up" : "log in", form);
+
+    try {
+      if (isSignup) {
+        const response = await api.post("/user/signup", {
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        });
+
+        toast.success(response.data.message);
+
+        setForm({
+          name: "",
+          email: "",
+          password: "",
+        });
+
+        setMode("login");
+      } else {
+        const response = await api.post("/user/login", {
+          email: form.email,
+          password: form.password,
+        });
+
+        toast.success(response.data.message);
+
+        // Navigate("/dashboard") later
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   }
 
   return (
@@ -62,7 +94,10 @@ export default function AuthPage() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {isSignup && (
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="name" className="text-[13px] text-muted font-medium">
+              <label
+                htmlFor="name"
+                className="text-[13px] text-muted font-medium"
+              >
                 Full name
               </label>
               <input
@@ -77,7 +112,10 @@ export default function AuthPage() {
           )}
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-[13px] text-muted font-medium">
+            <label
+              htmlFor="email"
+              className="text-[13px] text-muted font-medium"
+            >
               Email
             </label>
             <input
@@ -91,7 +129,10 @@ export default function AuthPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="password" className="text-[13px] text-muted font-medium">
+            <label
+              htmlFor="password"
+              className="text-[13px] text-muted font-medium"
+            >
               Password
             </label>
             <input
@@ -172,8 +213,8 @@ export default function AuthPage() {
           Live practice session
         </div>
         <h2 className="font-semibold text-[22px] leading-snug max-w-[460px] mb-10">
-          Rehearse the questions that actually get asked — with an AI interviewer
-          that adapts to your answers.
+          Rehearse the questions that actually get asked — with an AI
+          interviewer that adapts to your answers.
         </h2>
 
         <Transcript />
@@ -185,7 +226,9 @@ export default function AuthPage() {
           </div>
           <div>
             <div className="font-semibold text-[22px]">4.8/5</div>
-            <div className="text-xs text-muted mt-0.5">average feedback score</div>
+            <div className="text-xs text-muted mt-0.5">
+              average feedback score
+            </div>
           </div>
         </div>
       </div>
