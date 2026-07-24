@@ -54,9 +54,9 @@ export default function AuthPage() {
       <div className="flex-1 flex flex-col justify-center px-16 py-12 max-w-[560px]">
         <div className="flex items-center gap-2.5 mb-14">
           <div className="w-7 h-7 rounded-[7px] bg-amber flex items-center justify-center text-[#231603] font-bold text-[15px]">
-            P
+            I
           </div>
-          <div className="font-semibold text-base tracking-wide">Prepline</div>
+          <div className="font-semibold text-base tracking-wide">InterviAI</div>
         </div>
 
         <h1 className="font-semibold text-3xl leading-tight mb-2">
