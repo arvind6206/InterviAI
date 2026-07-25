@@ -1,9 +1,10 @@
-import { InterviewModel } from "../models/Interview"
-import { ResumeModel } from "../models/Resume"
+import { InterviewModel } from "../models/Interview.js"
+import { ResumeModel } from "../models/Resume.js"
+import { evaluateAnswer, generateFirstQuestion } from "../services/interview.service.js"
 
 export const startInterview = async(req, res) => {
     try {
-        const user = req.userId
+        const userId = req.userId
         const resume = await ResumeModel.findOne({userId})
         if(!resume){
             return res.status(404).json({
@@ -45,6 +46,96 @@ export const startInterview = async(req, res) => {
 
         return res.status(500).json({
             msg: "Internal Server Error"
+        })
+    }
+}
+
+export const answerInterview = async(req, res) => {
+    try {
+        const {interviewId, answer} = req.body
+
+        if(!interviewId || !answer){
+            return res.status(400).json({
+                msg: "Interview ID and answer are required"
+            })
+        }
+
+        const interview = await InterviewModel.findById(interviewId)
+
+        if(!interview){
+            return res.status(404).json({
+                msg: "Interview not found"
+            })
+        }
+
+        if(interview.status === "completed"){
+            return res.status(400).json({
+                msg: "Interview already completed"
+            })
+        }
+
+        //current question
+        const currentIndex = interview.currentQuestion - 1
+        const currentRound = interview.conversation[currentIndex]
+
+        if(!currentRound){
+            return res.status(400).json({
+                msg: "Current question not found"
+            })
+        }
+
+        currentRound.answer = answer
+
+        //ask gemini to evaluate
+        const aiResponse = await evaluateAnswer(
+            currentRound.question,
+            answer
+        )
+
+        //save feedback
+        currentRound.feedback = aiResponse.feedback;
+        currentRound.score = aiResponse.score
+
+        //Interview finished?
+        if(interview.currentQuestion >= 10){
+            interview.status = "completed"
+
+            interview.overallScore = aiResponse.overallScore
+            interview.overallFeedback = aiResponse.overallFeedback
+            interview.strenghts = aiResponse.strengths;
+            interview.weaknesses = aiResponse.weaknesses;
+            interview.recommendations = aiResponse.recommendations
+
+            await interview.save()
+
+            return res.status(200).json({
+                completed: true,
+                msg: "Interview completed successfully",
+                interview
+            })
+        }
+
+        //add next question
+        interview.conversation.push({
+            question: aiResponse.nextQuestion,
+            answer: "",
+            feedback: "",
+            score: 0,
+        })
+
+        interview.currentQuestion += 1;
+        await interview.save()
+
+        return res.status(500).json({
+            completed: false,
+            nextQuestion: aiResponse.nextQuestion,
+            feedback: currentRound.feedback,
+            score: currentRound.score
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: "Internal server Error"
         })
     }
 }

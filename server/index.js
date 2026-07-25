@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import userRouter from './routes/userRoute.js';
 import cors from 'cors'
 import resumeRouter from './routes/resumeRoute.js';
+import interviewRouter from './routes/interviewRoute.js';
 
 dotenv.config()
 

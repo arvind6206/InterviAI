@@ -13,7 +13,7 @@ const interviewSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending" || "in-progress" || "completed"],
+      enum: ["pending", "in-progress" , "completed"],
       default: "pending",
     },
     currentQuestion: {
