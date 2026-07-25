@@ -1,6 +1,7 @@
 import { ResumeModel } from "../models/Resume.js";
 import {UserModel} from '../models/User.js'
 import cloudinary from "../config/cloudinary.js";
+import { extractPdfText } from "../services/pdfExtractor.service.js";
 import fs from 'fs'
 
 
@@ -20,14 +21,18 @@ export const resume = async(req, res) => {
         folder: "resume"
        })
 
+       const parsedText = await extractPdfText(req.file.path);
+
        //delete local file
        fs.unlinkSync(req.file.path);
+
+
 
        //create resume document
        const resume = await ResumeModel.create({
         userId,
         resumeUrl: result.secure_url,
-        parsedText: "",
+        parsedText,
         summary: "",
         skills: [],
         projects: [],
