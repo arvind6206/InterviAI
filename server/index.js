@@ -20,6 +20,7 @@ const PORT = process.env.PORT;
 
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/resume', resumeRouter)
+app.use('/api/v1/interview', interviewRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is litening on http://localhost:${PORT}`)

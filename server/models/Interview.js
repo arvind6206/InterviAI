@@ -1,62 +1,65 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const interviewSchema = new mongoose.Schema({
+const interviewSchema = new mongoose.Schema(
+  {
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
 
     resumeId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Resume"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resume",
     },
     status: {
-        type: String,
-        enum: ["pending" || "in-progress" || "completed"],
-        default: "pending"
+      type: String,
+      enum: ["pending" || "in-progress" || "completed"],
+      default: "pending",
     },
     currentQuestion: {
-    type: Number,
-    default: 0
-},
+      type: Number,
+      default: 0,
+    },
     conversation: [
-        {
-            question: {
-                type: String
-            },
-            answer: {
-                type: String
-            },
-            feedback: {
-                type: String
-            },
-            score: {
-                type: Number
-            }
-        }
+      {
+        question: {
+          type: String,
+        },
+        answer: {
+          type: String,
+        },
+        feedback: {
+          type: String,
+        },
+        score: {
+          type: Number,
+        },
+      },
     ],
-    
+
     overallScore: {
-        type: Number
-    }, 
+      type: Number,
+    },
     overallFeedback: {
-        type: String
+      type: String,
     },
     strengths: [
-        {
-            type: String
-        }
+      {
+        type: String,
+      },
     ],
     weaknesses: [
-        {
-            type: String
-        }
+      {
+        type: String,
+      },
     ],
     recommendations: [
-        {
-            type: String
-        }
-    ]
-}, {timestamps: true})
+      {
+        type: String,
+      },
+    ],
+  },
+  { timestamps: true },
+);
 
-export const InterviewModel = mongoose.model('Interview', interviewSchema)
+export const InterviewModel = mongoose.model("Interview", interviewSchema);
