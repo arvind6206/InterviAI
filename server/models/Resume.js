@@ -13,6 +13,9 @@ const resumeSchema = new mongoose.Schema({
         type: String,
 
     },
+    summary:{
+        type: String
+    },
     skills: [
         {
         type: String,

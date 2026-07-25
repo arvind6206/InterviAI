@@ -17,6 +17,7 @@ connectDB()
 const PORT = process.env.PORT;
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/user', resumeRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is litening on http://localhost:${PORT}`)
