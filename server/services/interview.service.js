@@ -51,17 +51,28 @@ export const evaluateAnswer = async (question, answer) => {
       model: "gemini-3.5-flash",
 
       contents: `
-You are an experienced software engineering interviewer.
+You are interviewing this candidate.
 
-Evaluate the candidate's answer.
+Resume Summary:
+${resume.summary}
 
-Question:
+Skills:
+${resume.skills.join(", ")}
+
+Projects:
+${resume.projects.join(", ")}
+
+Current Question:
 ${question}
 
 Candidate Answer:
 ${answer}
 
-Return ONLY valid JSON.
+Evaluate the answer.
+
+Generate the next question based on the candidate's resume and previous discussion.
+
+Return ONLY JSON.
 
 Do not use markdown.
 Do not wrap the response inside \`\`\`.
