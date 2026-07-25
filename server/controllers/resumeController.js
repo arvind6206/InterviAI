@@ -3,6 +3,7 @@ import {UserModel} from '../models/User.js'
 import cloudinary from "../config/cloudinary.js";
 import { extractPdfText } from "../services/pdfExtractor.service.js";
 import fs from 'fs'
+import { analyzeResume } from "../services/gemini.service.js";
 
 
 export const resume = async(req, res) => {
@@ -21,8 +22,11 @@ export const resume = async(req, res) => {
         folder: "resume"
        })
 
-       const parsedText = await extractPdfText(req.file.path);
+       console.log(result)
 
+       const parsedText = await extractPdfText(req.file.path);
+       const aiResponse = await analyzeResume(parsedText)
+       console.log(aiResponse)
        //delete local file
        fs.unlinkSync(req.file.path);
 
@@ -33,12 +37,12 @@ export const resume = async(req, res) => {
         userId,
         resumeUrl: result.secure_url,
         parsedText,
-        summary: "",
-        skills: [],
-        projects: [],
-        experience: "",
-        education: "",
-        certifications: []
+        summary: aiResponse.summary,
+        skills: aiResponse.skills,
+        projects: aiResponse.projects,
+        experience: aiResponse.experience,
+        education: aiResponse.education,
+        certifications: aiResponse.certifications
        })
 
        return res.status(201).json({
