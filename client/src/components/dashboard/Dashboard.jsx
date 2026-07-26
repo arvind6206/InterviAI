@@ -7,32 +7,30 @@ import ResumeSummary from "./ResumeSummary";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import StartInterview from "./StartInterview";
-import api from '../../api/axios.js'
+import api from "../../api/axios.js";
 import UploadResume from "./UploadResume";
+import Experience from "./Experience.jsx";
+import Education from "./Education.jsx";
+import Certifications from "./Certifications.jsx";
 
 function Dashboard() {
   const [resume, setResume] = useState(null);
   const [user, setUser] = useState(null);
 
-
-
   useEffect(() => {
     getResume();
     getProfile();
-  },[]);
+  }, []);
 
   async function getResume() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await api.get(
-        '/resume',
-        {
-          headers: {
-            token,
-          },
+      const response = await api.get("/resume", {
+        headers: {
+          token,
         },
-      );
+      });
       setResume(response.data.resume);
     } catch (error) {
       console.log(error);
@@ -43,14 +41,11 @@ function Dashboard() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await api.get(
-        '/user/profile',
-        {
-          headers: {
-            token,
-          },
+      const response = await api.get("/user/profile", {
+        headers: {
+          token,
         },
-      );
+      });
       setUser(response.data.user);
     } catch (error) {
       console.log(error);
@@ -73,11 +68,17 @@ function Dashboard() {
                 <ReadinessCard resume={resume} />
               </div>
 
-              <ResumeSummary summary={resume.summary} />
+              <ResumeSummary summary={resume?.summary} />
 
-              <Skills skills={resume.skills} />
+              <Skills skills={resume?.skills} />
 
-              <Projects projects={resume.projects} />
+              <Projects projects={resume?.projects} />
+
+              <Experience experience={resume?.experience} />
+
+              <Education education={resume?.education} />
+
+              <Certifications certifications={resume?.certifications} />
 
               <StartInterview />
             </>
