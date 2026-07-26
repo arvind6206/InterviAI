@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import Hero from "./Hero";
-import ResumeStatus from "./ResumeStatus";
-import ReadinessCard from "./ReadinessCard";
-import ResumeSummary from "./ResumeSummary";
-import Skills from "./Skills";
-import Projects from "./Projects";
-import StartInterview from "./StartInterview";
-import api from "../../api/axios.js";
-import UploadResume from "./UploadResume";
-import Experience from "./Experience.jsx";
-import Education from "./Education.jsx";
-import Certifications from "./Certifications.jsx";
+import Sidebar from "../components/dashboard/Sidebar.jsx";
+import Hero from "../components/dashboard/Hero.jsx";
+import UploadResume from "../components/dashboard/UploadResume.jsx";
+import ResumeStatus from "../components/dashboard/ResumeStatus.jsx";
+import ReadinessCard from "../components/dashboard/ReadinessCard.jsx";
+import ResumeSummary from "../components/dashboard/ResumeSummary.jsx";
+import Skills from "../components/dashboard/Skills.jsx";
+import Projects from "../components/dashboard/Projects.jsx";
+import Experience from "../components/dashboard/Experience.jsx";
+import Education from "../components/dashboard/Education.jsx";
+import Certifications from "../components/dashboard/Certifications.jsx";
+import StartInterview from "../components/dashboard/StartInterview.jsx";
+import api from '../api/axios.js'
+
 
 function Dashboard() {
   const [resume, setResume] = useState(null);
