@@ -22,11 +22,11 @@ export const resume = async(req, res) => {
         folder: "resume"
        })
 
-       console.log(result)
+      //  console.log(result)
 
        const parsedText = await extractPdfText(req.file.path);
        const aiResponse = await analyzeResume(parsedText)
-       console.log(aiResponse)
+      //  console.log(aiResponse)
        //delete local file
        fs.unlinkSync(req.file.path);
 

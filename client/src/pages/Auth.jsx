@@ -2,10 +2,13 @@ import { useState } from "react";
 import Transcript from "./Transcript";
 import api from "../api/axios.js";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
   const [mode, setMode] = useState("login");
   const isSignup = mode === "signup";
+
+  const navigate = useNavigate()
 
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
@@ -37,11 +40,14 @@ export default function AuthPage() {
         const response = await api.post("/user/login", {
           email: form.email,
           password: form.password,
-        });
+        })
+        toast.success(response.data.message)
 
-        toast.success(response.data.message);
+      //save jwt
+      localStorage.setItem("token", response.data.token)
 
-        // Navigate("/dashboard") later
+        navigate("/dashboard")
+      
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");

@@ -7,72 +7,83 @@ import ResumeSummary from "./ResumeSummary";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import StartInterview from "./StartInterview";
-import axios from "axios";
+import api from '../../api/axios.js'
+import UploadResume from "./UploadResume";
 
 function Dashboard() {
-    const [resume, setResume] = useState(null)
-    const [user, setUser] = useState(null);
+  const [resume, setResume] = useState(null);
+  const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        getResume()
-        getProfile()
-    })
 
-    async function getResume(){
-        try {
-            const token = localStorage.getItem("token")
 
-            const response = await axios.get(
-                `{import.meta.env.VITE_BACKEND_URL}/api/v1/resume`,{
-                    headers: {
-                        token
-                    }
-                }
-            )
-            setResume(response.data.resume)
-        } catch (error) {
-            console.log(error)
-        }
+  useEffect(() => {
+    getResume();
+    getProfile();
+  },[]);
+
+  async function getResume() {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await api.get(
+        '/resume',
+        {
+          headers: {
+            token,
+          },
+        },
+      );
+      setResume(response.data.resume);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    async function getProfile(){
-        try {
-            const token = localStorage.getItem("token")
+  async function getProfile() {
+    try {
+      const token = localStorage.getItem("token");
 
-            const response = await axios.get(
-                `{import.meta.env.VITE_BACKEND_URL}/api/v1/user/profile`,{
-                    headers: {
-                        token
-                    }
-                }
-            )
-            setUser(response.data.user)
-        } catch (error) {
-            console.log(error)
-        }
+      const response = await api.get(
+        '/user/profile',
+        {
+          headers: {
+            token,
+          },
+        },
+      );
+      setUser(response.data.user);
+    } catch (error) {
+      console.log(error);
     }
+  }
   return (
     <>
-       <div className="flex min-h-screen bg-[#000E24]">
-    <Sidebar />
+      <div className="flex min-h-screen bg-[#000E24]">
+        <Sidebar />
 
-    <div className="flex-1 p-8 overflow-y-auto">
-      <Hero user={user}/>
+        <main className="flex-1 overflow-y-auto p-10">
+          <Hero user={user} resume={resume} />
 
-      <div className="grid grid-cols-2 gap-6 mt-8">
-        <ResumeStatus />
-        <ReadinessCard />
+          {!resume ? (
+            <UploadResume refreshResume={getResume} />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-6 mt-8">
+                <ResumeStatus resume={resume} />
+                <ReadinessCard resume={resume} />
+              </div>
+
+              <ResumeSummary summary={resume.summary} />
+
+              <Skills skills={resume.skills} />
+
+              <Projects projects={resume.projects} />
+
+              <StartInterview />
+            </>
+          )}
+        </main>
       </div>
-
-      <ResumeSummary summary={resume?.summary} />
-
-      <Skills skills={resume?.skills} />
-
-      <Projects projects={resume?.projects} />
-
-      <StartInterview />
-    </div>
-  </div>
     </>
   );
 }
