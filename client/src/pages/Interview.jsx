@@ -4,6 +4,8 @@ import api from "../api/axios.js";
 import { speak } from "../utils/speak.js";
 import Transcript from "../components/interview/Transcript.jsx";
 import Controls from "../components/interview/Controls.jsx";
+import FeedbackCard from "../components/interview/FeedbackCard.jsx";
+import toast from "react-hot-toast";
 
 function Interview() {
   const [status, setStatus] = useState("idle");
@@ -12,6 +14,7 @@ function Interview() {
   const [loading, setLoading] = useState(true);
   const [answer, setAnswer] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null)
 
   useEffect(() => {
     if (!question) {
@@ -51,6 +54,11 @@ function Interview() {
           },
         },
       );
+
+      setFeedback({
+  score: response.data.score,
+  feedback: response.data.feedback,
+});
 
       console.log(response.data);
 
@@ -118,6 +126,8 @@ function Interview() {
           onRecord={() => console.log("Start recording")}
           onSubmit={handleSubmit}
         />
+
+        <FeedbackCard feedback={feedback} />
       </div>
     </div>
   );
