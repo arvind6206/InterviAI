@@ -1,4 +1,5 @@
 import { Bot, Volume2 } from "lucide-react";
+import { speak } from "../../utils/speak";
 
 function VoiceAssistant({
   status = "idle",
@@ -52,7 +53,7 @@ function VoiceAssistant({
       {/*replay*/}
 
       <div className="flex justify-center mt-6">
-        <button
+        <button onClick={() => speak(question)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700
                 transition px-6 py-3 rounded-xl text-white"
         >

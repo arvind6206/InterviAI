@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import VoiceAssistant from "../components/interview/VoiceAssistant";
 import api from "../api/axios.js";
+import { speak } from "../utils/speak.js";
 // import QuestionCard from "../components/interview/QuestionCard";
 // import Transcript from "../components/interview/Transcript";
 // import Controls from "../components/interview/Controls";
@@ -11,6 +12,22 @@ function Interview() {
   const [question, setQuestion] = useState("")
   const [interviewId, setInterviewId] = useState("");
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if(!question){
+      return
+    }
+
+    speak(question, {
+      onStart: () => {
+        setStatus("speaking")
+      },
+
+      onEnd: () => {
+        setStatus("listening")
+      }
+    })
+  }, [question])
 
   useEffect(() => {
     startInterview()
