@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VoiceAssistant from "../components/interview/VoiceAssistant";
 import api from "../api/axios.js";
 import { speak } from "../utils/speak.js";
@@ -6,6 +6,7 @@ import Transcript from "../components/interview/Transcript.jsx";
 import Controls from "../components/interview/Controls.jsx";
 import FeedbackCard from "../components/interview/FeedbackCard.jsx";
 import toast from "react-hot-toast";
+import Microphone from "../components/interview/MicroPhone.jsx";
 
 function Interview() {
   const [status, setStatus] = useState("idle");
@@ -14,7 +15,60 @@ function Interview() {
   const [loading, setLoading] = useState(true);
   const [answer, setAnswer] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState(null)
+  const [feedback, setFeedback] = useState(null);
+  const [isListening, setIsListening] = useState(false);
+
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech Recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+
+    recognition.continuous = true;
+
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+
+      for (let i = 0; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+
+      setAnswer(transcript);
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
+
+  function startListening() {
+    if (!recognitionRef.current) return;
+
+    recognitionRef.current.start();
+  }
+
+  function stopListening() {
+    if (!recognitionRef.current) return;
+
+    recognitionRef.current.stop();
+  }
 
   useEffect(() => {
     if (!question) {
@@ -56,9 +110,9 @@ function Interview() {
       );
 
       setFeedback({
-  score: response.data.score,
-  feedback: response.data.feedback,
-});
+        score: response.data.score,
+        feedback: response.data.feedback,
+      });
 
       console.log(response.data);
 
@@ -117,6 +171,12 @@ function Interview() {
           answer={answer}
           setAnswer={setAnswer}
           disabled={status === "speaking"}
+        />
+
+        <Microphone
+          isListening={isListening}
+          startListening={startListening}
+          stopListening={stopListening}
         />
 
         <Controls
