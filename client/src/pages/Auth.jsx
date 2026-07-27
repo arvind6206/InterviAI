@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Transcript from "./Transcript";
+import DemoTranscript from "./DemoTranscript.jsx";
 import api from "../api/axios.js";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -223,7 +223,7 @@ export default function AuthPage() {
           interviewer that adapts to your answers.
         </h2>
 
-        <Transcript />
+        <DemoTranscript />
 
         <div className="flex gap-7 mt-8">
           <div>

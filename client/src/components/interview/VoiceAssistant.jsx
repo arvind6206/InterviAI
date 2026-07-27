@@ -34,26 +34,23 @@ function VoiceAssistant({
       {/*ques*/}
 
       <div className="mt-8 bg-slate-900 border border-slate-700 rounded-2xl p-6">
-        <p
-          className={`text-center font-semibold mt-5
-  ${
-    status === "speaking"
-      ? "text-blue-400"
-      : status === "listening"
-        ? "text-green-400"
-        : status === "thinking"
-          ? "text-yellow-400"
-          : "text-gray-400"
-  }`}
-        >
-          {status.toUpperCase()}
+        <p className="text-center text-blue-400 font-medium">
+          {status === "speaking" && "🎙️ InterviAI is speaking..."}
+          {status === "listening" && "🎤 Listening..."}
+          {status === "thinking" && "🧠 Thinking..."}
+          {status === "idle" && "Ready"}
+        </p>
+
+        <p className="text-white text-lg leading-8 text-center mt-6">
+          {question}
         </p>
       </div>
 
       {/*replay*/}
 
       <div className="flex justify-center mt-6">
-        <button onClick={() => speak(question)}
+        <button
+          onClick={() => speak(question)}
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700
                 transition px-6 py-3 rounded-xl text-white"
         >
