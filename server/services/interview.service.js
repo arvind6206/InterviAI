@@ -45,7 +45,7 @@ Rules:
   }
 };
 
-export const evaluateAnswer = async (question, answer) => {
+export const evaluateAnswer = async (resume, question, answer) => {
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3.5-flash",

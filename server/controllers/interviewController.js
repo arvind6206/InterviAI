@@ -86,8 +86,16 @@ export const answerInterview = async(req, res) => {
 
         currentRound.answer = answer
 
+        const resume = await ResumeModel.findById(interview.resumeId);
+        if(!resume){
+            return res.status(404).json({
+                msg: "Resume not found"
+            })
+        }
+
         //ask gemini to evaluate
         const aiResponse = await evaluateAnswer(
+            resume,
             currentRound.question,
             answer
         )
@@ -102,7 +110,7 @@ export const answerInterview = async(req, res) => {
 
             interview.overallScore = aiResponse.overallScore
             interview.overallFeedback = aiResponse.overallFeedback
-            interview.strenghts = aiResponse.strengths;
+            interview.strengths = aiResponse.strengths;
             interview.weaknesses = aiResponse.weaknesses;
             interview.recommendations = aiResponse.recommendations
 
@@ -126,7 +134,7 @@ export const answerInterview = async(req, res) => {
         interview.currentQuestion += 1;
         await interview.save()
 
-        return res.status(500).json({
+        return res.status(200).json({
             completed: false,
             nextQuestion: aiResponse.nextQuestion,
             feedback: currentRound.feedback,
