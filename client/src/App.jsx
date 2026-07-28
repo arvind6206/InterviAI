@@ -4,6 +4,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Interview from './pages/Interview'
 import Report from './pages/Report'
+import Resume from './pages/Resume'
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
       <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path='/interview' element={<Interview/>}/>
       <Route path='/report' element={<Report/>}/>
+      <Route path='/resume' element={<Resume/>}/>
+
 
     </Routes>
     

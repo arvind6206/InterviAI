@@ -1,39 +1,102 @@
 import React from "react";
-import { LayoutDashboard } from "lucide-react";
-import { FileUser } from "lucide-react";
-import { Mic } from "lucide-react";
-import { Settings } from "lucide-react";
-import { SignalMedium } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  FileUser,
+  Mic,
+  SignalMedium,
+  Settings,
+} from "lucide-react";
 
 function Sidebar() {
+  const menuItems = [
+    {
+      title: "Dashboard",
+      icon: <LayoutDashboard size={20} />,
+      path: "/dashboard",
+    },
+    {
+      title: "Resume",
+      icon: <FileUser size={20} />,
+      path: "/resume",
+    },
+    {
+      title: "Interviews",
+      icon: <Mic size={20} />,
+      path: "/interview",
+    },
+    {
+      title: "Reports",
+      icon: <SignalMedium size={20} />,
+      path: "/report",
+    },
+    {
+      title: "Settings",
+      icon: <Settings size={20} />,
+      path: "/settings",
+    },
+  ];
+
   return (
-    <div className="min-h-screen max-w-60 bg-[#1c1c1c] p-5">
-      <div className="">
-        <h2 className="font-semibold text-md">InterviAI</h2>
+    <aside className="min-h-screen w-64 bg-[#111827] border-r border-slate-700 p-6">
+
+      {/* Logo */}
+
+      <div className="mb-10">
+        <h1 className="text-2xl font-bold text-white">
+          InterviAI
+        </h1>
+
+        <p className="text-slate-400 text-sm mt-1">
+          AI Interview Platform
+        </p>
       </div>
-      <div className="mt-5 cursor-pointer">
-        <div className="flex items-center gap-2 hover:bg-blue-800 h-9 w-50 p-1 rounded-md">
-          <LayoutDashboard size={20} />
-          <h3>Dashboard</h3>
+
+      {/* Navigation */}
+
+      <nav className="space-y-3">
+
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.title}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+              }`
+            }
+          >
+            {item.icon}
+
+            <span className="font-medium">
+              {item.title}
+            </span>
+          </NavLink>
+        ))}
+
+      </nav>
+
+      {/* Footer */}
+
+      <div className="absolute bottom-6 left-6 right-6">
+
+        <div className="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+
+          <h3 className="text-white font-semibold">
+            InterviAI
+          </h3>
+
+          <p className="text-slate-400 text-xs mt-1">
+            Practice smarter with AI-powered interviews.
+          </p>
+
         </div>
-        <div className="flex items-center gap-2 mt-2 hover:bg-blue-800 h-9 w-50 p-1 rounded-md">
-          <FileUser size={20} />
-          <h3>Resume</h3>
-        </div>
-        <div className="flex items-center gap-2 mt-2 hover:bg-blue-800 h-9 w-50 p-1 rounded-md">
-          <Mic size={20} />
-          <h3>Interviews</h3>
-        </div>
-        <div className="flex items-center gap-2 mt-2 hover:bg-blue-800 h-9 w-50 p-1 rounded-md">
-          <SignalMedium size={20} />
-          <h3>Reports</h3>
-        </div>
-        <div className="flex items-center gap-2 mt-2 hover:bg-blue-800 h-9 w-50 p-1 rounded-md">
-          <Settings size={20} />
-          <h3>Settings</h3>
-        </div>
+
       </div>
-    </div>
+
+    </aside>
   );
 }
 
