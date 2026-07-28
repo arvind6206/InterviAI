@@ -18,6 +18,9 @@ function Interview() {
   const [feedback, setFeedback] = useState(null);
   const [isListening, setIsListening] = useState(false);
 
+  const [questionNumber, setQuestionNumber] = useState(1);
+  const [completed, setCompleted] = useState(false);
+
   const recognitionRef = useRef(null);
 
   useEffect(() => {
@@ -82,6 +85,7 @@ function Interview() {
 
       onEnd: () => {
         setStatus("listening");
+        startListening();
       },
     });
   }, [question]);
@@ -91,8 +95,12 @@ function Interview() {
   }, []);
 
   async function handleSubmit() {
+    if (answer.trim() === "") return;
+
     try {
       setSubmitting(true);
+
+      setStatus("thinking");
 
       const token = localStorage.getItem("token");
 
@@ -109,18 +117,28 @@ function Interview() {
         },
       );
 
+      if (response.data.completed) {
+        setCompleted(true);
+
+        navigate("/report");
+
+        return;
+      }
+
       setFeedback({
         score: response.data.score,
         feedback: response.data.feedback,
       });
 
-      console.log(response.data);
+      setTimeout(() => {
+        setFeedback(null);
 
-      // Update question
-      setQuestion(response.data.nextQuestion);
+        setAnswer("");
 
-      // Clear textarea
-      setAnswer("");
+        setQuestion(response.data.nextQuestion);
+
+        setQuestionNumber((prev) => prev + 1);
+      }, 3000);
     } catch (error) {
       console.log(error);
     } finally {
@@ -165,12 +183,17 @@ function Interview() {
   return (
     <div className="min-h-screen bg-[#000E24] flex items-center justify-center p-10">
       <div className="w-full max-w-4xl">
-        <VoiceAssistant status={status} question={question} />
+        <VoiceAssistant
+          status={status}
+          question={question}
+          questionNumber={questionNumber}
+          totalQuestions={10}
+        />
 
         <Transcript
           answer={answer}
           setAnswer={setAnswer}
-          disabled={status === "speaking"}
+          disabled={status === "speaking" || "submitting"}
         />
 
         <Microphone
@@ -183,7 +206,7 @@ function Interview() {
           answer={answer}
           loading={submitting}
           onReplay={() => speak(question)}
-          onRecord={() => console.log("Start recording")}
+          onRecord={startListening}
           onSubmit={handleSubmit}
         />
 
