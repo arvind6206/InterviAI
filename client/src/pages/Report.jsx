@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
 import ScoreCard from "../components/report/ScoreCard";
-// import PerformanceCards from "../components/report/PerformanceCards";
-// import InterviewSummary from "../components/report/InterviewSummary";
-// import Strengths from "../components/report/Strengths";
-// import Weaknesses from "../components/report/Weaknesses";
-// import Recommendation from "../components/report/Recommendation";
-// import ActionButtons from "../components/report/ActionButtons";
+import PerformanceCards from "../components/report/PerformanceCards";
+import InterviewSummary from "../components/report/InterviewSummary";
+import Strengths from "../components/report/Strengths";
+import Weaknesses from "../components/report/Weaknesses";
+import Recommendation from "../components/report/Recommendation";
+import ActionButtons from "../components/report/ActionButtons";
 
 function Report() {
 
@@ -20,41 +20,43 @@ function Report() {
   */
 
   const report = {
-    overallScore: 84,
+  candidate: "Arvind Vishwkarma",
 
-    technical: 82,
+  overallScore: 84,
 
-    communication: 91,
+  technical: 82,
 
-    confidence: 88,
+  communication: 91,
 
-    problemSolving: 76,
+  confidence: 88,
 
-    totalQuestions: 10,
+  problemSolving: 76,
 
-    duration: "18 Minutes",
+  totalQuestions: 10,
 
-    role: "Backend Developer",
+  duration: "18 Minutes",
 
-    interviewDate: "28 July 2026",
+  role: "Backend Developer",
 
-    strengths: [
-      "Strong React knowledge",
-      "Good MongoDB understanding",
-      "Clear communication",
-      "Good API design",
-    ],
+  interviewDate: "28 July 2026",
 
-    weaknesses: [
-      "Need better System Design knowledge",
-      "Explain scalability more clearly",
-      "Improve behavioral answers",
-      "Practice Redis concepts",
-    ],
+  strengths: [
+    "Strong React knowledge",
+    "Good MongoDB understanding",
+    "Clear communication",
+    "Good API design",
+  ],
 
-    recommendation:
-      "Your fundamentals are good. Focus on System Design, Docker, Redis and scalable backend architecture. Continue practicing behavioral interviews using the STAR method.",
-  };
+  weaknesses: [
+    "Need better System Design knowledge",
+    "Explain scalability more clearly",
+    "Improve behavioral answers",
+    "Practice Redis concepts",
+  ],
+
+  recommendation:
+    "Your fundamentals are good. Focus on System Design, Docker, Redis and scalable backend architecture.",
+};
 
   return (
     <div className="min-h-screen bg-[#000E24]">
@@ -83,7 +85,7 @@ function Report() {
 
         <div className="mt-10">
 
-          {/* <PerformanceCards report={report} /> */}
+          <PerformanceCards report={report} />
 
         </div>
 
@@ -91,7 +93,7 @@ function Report() {
 
         <div className="grid lg:grid-cols-2 gap-8 mt-10">
 
-          {/* <InterviewSummary report={report} /> */}
+          <InterviewSummary report={report} />
 
           {/* We'll build Resume Match later */}
 
@@ -151,9 +153,9 @@ function Report() {
 
         <div className="grid lg:grid-cols-2 gap-8 mt-10">
 
-          {/* <Strengths strengths={report.strengths} /> */}
+          <Strengths strengths={report.strengths} />
 
-          {/* <Weaknesses weaknesses={report.weaknesses} /> */}
+          <Weaknesses weaknesses={report.weaknesses} />
 
         </div>
 
@@ -161,9 +163,9 @@ function Report() {
 
         <div className="mt-10">
 
-          {/* <Recommendation
+          <Recommendation
             recommendation={report.recommendation}
-          /> */}
+          />
 
         </div>
 
@@ -171,7 +173,7 @@ function Report() {
 
         <div className="mt-10">
 
-          {/* <ActionButtons /> */}
+          <ActionButtons />
 
         </div>
 
