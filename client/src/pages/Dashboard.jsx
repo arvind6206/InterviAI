@@ -2,14 +2,6 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/dashboard/Sidebar.jsx";
 import Hero from "../components/dashboard/Hero.jsx";
 import UploadResume from "../components/dashboard/UploadResume.jsx";
-import ResumeStatus from "../components/dashboard/ResumeStatus.jsx";
-import ReadinessCard from "../components/dashboard/ReadinessCard.jsx";
-import ResumeSummary from "../components/dashboard/ResumeSummary.jsx";
-import Skills from "../components/dashboard/Skills.jsx";
-import Projects from "../components/dashboard/Projects.jsx";
-import Experience from "../components/dashboard/Experience.jsx";
-import Education from "../components/dashboard/Education.jsx";
-import Certifications from "../components/dashboard/Certifications.jsx";
 import StartInterview from "../components/dashboard/StartInterview.jsx";
 import api from '../api/axios.js'
 
@@ -63,26 +55,9 @@ function Dashboard() {
           {!resume ? (
             <UploadResume refreshResume={getResume} />
           ) : (
-            <>
-              <div className="grid grid-cols-2 gap-6 mt-8">
-                <ResumeStatus resume={resume} />
-                <ReadinessCard resume={resume} />
-              </div>
-
-              <ResumeSummary summary={resume?.summary} />
-
-              <Skills skills={resume?.skills} />
-
-              <Projects projects={resume?.projects} />
-
-              <Experience experience={resume?.experience} />
-
-              <Education education={resume?.education} />
-
-              <Certifications certifications={resume?.certifications} />
-
+            <div className="mt-8">
               <StartInterview />
-            </>
+            </div>
           )}
         </main>
       </div>

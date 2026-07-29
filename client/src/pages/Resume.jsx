@@ -5,10 +5,7 @@ import BasicInfo from "../components/resume/BasicInfo";
 import Summary from "../components/resume/Summary";
 import Skills from "../components/resume/Skills";
 import Experience from "../components/resume/Experience";
-import Projects from "../components/resume/Projects";
 import Education from "../components/resume/Education";
-import Certifications from "../components/resume/Certifications";
-import Language from "../components/resume/Language";
 import ResumePreview from "../components/resume/ResumePreview";
 import SaveBar from "../components/resume/SaveBar";
 
@@ -21,20 +18,10 @@ function Resume() {
     linkedin: "",
     github: "",
     portfolio: "",
-
     summary: "",
-
     skills: [],
-
     experience: [],
-
-    projects: [],
-
     education: [],
-
-    certifications: [],
-
-    languages: [],
   });
 
   useEffect(() => {
@@ -56,10 +43,7 @@ function Resume() {
           ...response.data.resume,
           skills: Array.isArray(response.data.resume.skills) ? response.data.resume.skills : [],
           experience: Array.isArray(response.data.resume.experience) ? response.data.resume.experience : [],
-          projects: Array.isArray(response.data.resume.projects) ? response.data.resume.projects : [],
           education: Array.isArray(response.data.resume.education) ? response.data.resume.education : [],
-          certifications: Array.isArray(response.data.resume.certifications) ? response.data.resume.certifications : [],
-          languages: Array.isArray(response.data.resume.languages) ? response.data.resume.languages : [],
         });
       }
     } catch (error) {
@@ -83,29 +67,29 @@ function Resume() {
     }
   }
 
+  function downloadPDF() {
+    const element = document.getElementById("resume-preview");
+    if (!element) return;
+
+    // Simple print to PDF functionality
+    window.print();
+  }
+
   return (
     <div className="min-h-screen bg-[#000E24] p-10">
-
       <div className="max-w-7xl mx-auto">
-
         <div className="mb-10">
-
           <h1 className="text-4xl font-bold text-white">
             Resume Builder
           </h1>
-
           <p className="text-slate-400 mt-2">
-            Edit your professional profile and keep it interview ready.
+            Edit your professional profile and download as PDF.
           </p>
-
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-
-          {/* Left Side */}
-
+          {/* Left Side - Edit Form */}
           <div className="lg:col-span-2 space-y-8">
-
             <BasicInfo
               resume={resume}
               setResume={setResume}
@@ -126,50 +110,35 @@ function Resume() {
               setResume={setResume}
             />
 
-            <Projects
-              resume={resume}
-              setResume={setResume}
-            />
-
             <Education
               resume={resume}
               setResume={setResume}
             />
-
-            <Certifications
-              resume={resume}
-              setResume={setResume}
-            />
-
-            <Language
-              resume={resume}
-              setResume={setResume}
-            />
-
           </div>
 
-          {/* Right Side */}
-
+          {/* Right Side - Preview & Actions */}
           <div>
+            <div id="resume-preview">
+              <ResumePreview
+                resume={resume}
+              />
+            </div>
 
-            <ResumePreview
-              resume={resume}
-            />
-
-            <div className="mt-6">
-
+            <div className="mt-6 space-y-4">
               <SaveBar
                 onSave={saveResume}
               />
 
+              <button
+                onClick={downloadPDF}
+                className="w-full bg-green-600 hover:bg-green-700 transition px-6 py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2"
+              >
+                Download PDF
+              </button>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
